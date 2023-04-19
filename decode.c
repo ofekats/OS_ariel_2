@@ -37,9 +37,21 @@ int main(int argc, char *argv[])
     // printf("size: %d\n", size);
     // printf("argv[1]: %s\n", argv[1]);
     char* lib = argv[1];
-    strcat(lib, ".so");
-    // printf("argv[1]: %s\n", lib);
-    handle = dlopen(lib, RTLD_LAZY);
+    if(strcmp(lib, "codecA") == 0)
+    {
+        char * str = "./libcodecA.so";
+        handle = dlopen(str, RTLD_LAZY);
+    }
+    else if(strcmp(lib, "codecB") == 0)
+    {
+        char * str = "./libcodecB.so";
+        handle = dlopen(str, RTLD_LAZY);
+    }
+    else
+    {
+        printf("Error:dncode <codec> <message>\n");
+        return 1; 
+    }
     if(handle == NULL)
     {
         printf("dlopen failed: %s\n", dlerror());

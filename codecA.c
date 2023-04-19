@@ -9,7 +9,7 @@ char * encode(char * str, int size)
         {
             str[i] +=32;
         }
-        if(str[i] > 96 && str[i] < 123)
+        else if(str[i] > 96 && str[i] < 123)
         {
             str[i] -=32;
         }
@@ -23,16 +23,13 @@ char * decode(char * str, int size)
     {
         if(str[i] > 64 && str[i] < 91)
         {
-            printf("before: %d, %s\n", str[i], str);
             str[i] +=32;
-            printf("after: %d, %s\n", str[i], str);
 
         }
         else if(str[i] > 96 && str[i] < 123)
         {
             str[i] -=32;
         }
-        printf("%s\n", str);
     }
     return str;
 }

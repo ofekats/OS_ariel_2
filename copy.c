@@ -16,6 +16,11 @@ int main(int argc, char *argv[])
     char* file2 = argv[2];
     int flagv = 0;
     int flagf = 0;
+    if(strcmp(argv[2], "-v") == 0 || strcmp(argv[2], "-r") == 0)
+    {
+        printf("Error:the usage is- copy <file1> <file2> optional:flags (-v ,-f)\n");
+        return 1;
+    }
     if(argc > 3)
     {
         if(strcmp(argv[3], "-v") == 0)
