@@ -22,10 +22,13 @@ int main()
 	signal(SIGINT, handler);
 	while (1)
 	{
-		printf("hello: ");
+		printf("\x1b[35mMoriyaEsterAndOfek~stshell: \x1b[0m");
 		fgets(command, 1024, stdin);
 		command[strlen(command) - 1] = '\0'; // replace \n with \0
-
+		if (strcmp(command, "exit") == 0 || strcmp(command, "exit()") == 0)
+		{
+			return 0;
+		}
 		/* parse command line */
 		i = 0;
 		token = strtok(command, " ");
