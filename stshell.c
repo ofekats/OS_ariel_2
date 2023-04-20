@@ -57,11 +57,9 @@ int main()
 			int i = 0;
 			while (argv[i] != NULL)
 			{
-				printf("argv[i] = %s\n", argv[i]);
 				// if we have >
 				if (strcmp(argv[i], ">") == 0)
 				{
-					// printf("if >\n");
 					char *filename = argv[i + 1];
 					int fd1 = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 					if (fd1 < 0)
@@ -76,15 +74,12 @@ int main()
 					}
 					close(fd1);
 					argv[i] = NULL;
-					// argv[i+1] = NULL;
 					break;
 				}
 				// if we have >>
 				if (strcmp(argv[i], ">>") == 0)
 				{
-					printf("if >>\n");
 					char *filename = argv[i + 1];
-					printf("filename: %s", filename);
 					int fd1 = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 					if (fd1 < 0)
 					{
@@ -98,14 +93,11 @@ int main()
 					}
 					close(fd1);
 					argv[i] = NULL;
-					// argv[i+1] = NULL;
 					break;
 				}
 				// if we have |
 				if (strcmp(argv[i], "|") == 0)
 				{
-					printf("if |\n");
-					// printf("in pipe!\n");
 					int fd[2];
 					if (pipe(fd) < 0)
 					{
@@ -113,29 +105,23 @@ int main()
 						return 1;
 					}
 					int id2 = fork();
-					// printf("fork!\n");
 					if (id2 < 0)
 					{
 						perror("Error");
 						return 1;
 					}
 					if (id2 == 0)
-					{
-						// printf("grandchild!\n");
+					{ 
+						//the first command: <first> | <second>
 						close(fd[0]);
 						int j = 0;
-						// int k = i;
 						char *argv1[10];
 						while (strcmp(argv[j], "|"))
 						{
-							// printf("j = %d\n", j);
 							argv1[j] = argv[j];
 							j++;
 						}
-						// printf("j = %d\n", j);
 						argv1[j] = NULL;
-						// printf("argv1= %s\n", *argv1);
-						// printf("to grandchild: %s\n", **argv1);
 						if (dup2(fd[1], 1) < 0) // stdout of grandchild == fd[1] -> write to pipe
 						{
 							perror("Error");
@@ -145,21 +131,18 @@ int main()
 						execvp(argv1[0], argv1);
 					}
 					else
-					{
-						// printf("child!\n");
+					{ 
+						//the second command: <first> | <second>
 						int j = 0;
 						int k =i+1;
 						while (argv[k] != NULL)
 						{
-							// printf("i= %d\n", i);
-							// printf("j= %d\n", j);
 							argv[j] = argv[k];
 							j++;
 							k++;
 						}
 						i = -1;
 						argv[j] = NULL;
-						// printf("to child: %s\n", *argv);
 						close(fd[1]);
 						if (dup2(fd[0], 0) < 0) // stdin of child == fd[0] -> read of pipe
 						{
@@ -168,20 +151,10 @@ int main()
 						}
 						close(fd[0]);
 						wait(NULL);
-						// break;
 					}
 				}
-				printf("after ifs \n");
 				i++;
 			}
-			int d =0;
-			while (argv[d] !=NULL)
-			{
-				printf("%s\n", argv[d]);
-				d++;
-			}
-			printf("--------------------------\n");
-			// printf("argv= %s\n", *argv);
 			execvp(argv[0], argv);
 		}
 		wait(NULL);
